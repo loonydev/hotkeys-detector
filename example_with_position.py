@@ -12,7 +12,7 @@ def test_function(event,parameter):
 
 parameters={'running':True}
 
-hotkeysdetector=hotkeys.HotKeysDetector(parameters=True)
+hotkeysdetector=hotkeys.HotKeysDetector(parameters=True,position=True)
 hotkeysdetector.addhotkeys("CONTROL_L+f12",test_function,parameters)
 hotkeysdetector.addhotkeys("SPACE",test_function,parameters)
 hotkeysdetector.start()
