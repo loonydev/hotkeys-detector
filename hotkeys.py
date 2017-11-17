@@ -36,9 +36,14 @@ class HotKeysDetector(threading.Thread):
         # print(event)
         # print('-----')
         #
-        self.pressed=self.pressed+"+"+event.Key.upper()
+        if(self.pressed!=''):
+            self.pressed=self.pressed+"+"+event.Key.upper()
+        else:
+            self.pressed=event.Key.upper()
+
         if(len(self.pressed.split('+'))+1>self.maximum_length):
-            self.pressed=self.pressed[self.pressed.find('+')+1:]
+            self.delete_key()
+            #self.pressed=self.pressed[self.pressed.find('+')+1:]
 
         # print('---------------------------')
         # print(self.list_hot_keys)
@@ -50,6 +55,9 @@ class HotKeysDetector(threading.Thread):
                     self.list_hot_keys[keys]['events'](keys)
                 else:
                     self.list_hot_keys[keys]['events'](keys,self.list_hot_keys[keys]['parameter'])
+                self.delete_key(first=False,number=len(keys.split('+')))
+        print(self.pressed)
+
     def run(self):
         while self.running:
             time.sleep(0.1)
@@ -60,7 +68,15 @@ class HotKeysDetector(threading.Thread):
         self.hookman.cancel()
         self.finished.set()
 
-
+    def delete_key(self,first=True,number=1):
+        print('Before '+self.pressed)
+        time_array=self.pressed.split('+')
+        #print(time_array)
+        if first:
+            self.pressed='+'.join(time_array[number:])
+        else:
+            self.pressed='+'.join(time_array[:len(time_array)-number])
+        print('After '+self.pressed)
 
     def addhotkeys(self,string_key,events,parameter=None):
         self.list_hot_keys[string_key.upper()]={'events':events, 'parameter':parameter}

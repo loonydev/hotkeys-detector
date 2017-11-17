@@ -6,7 +6,8 @@ import time
 def test_function(event,parameter):
     print(event)
     if(event=='SPACE'):
-        parameter['running']=False
+        #parameter['running']=False
+        print("Space")
 
 
 parameters={'running':True}
